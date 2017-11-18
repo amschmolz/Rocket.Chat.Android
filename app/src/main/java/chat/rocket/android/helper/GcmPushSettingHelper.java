@@ -18,6 +18,12 @@ public class GcmPushSettingHelper {
         .findAll();
   }
 
+  public static RealmResults<RealmPublicSetting> getSenderID(Realm realm) {
+    return realm.where(RealmPublicSetting.class)
+            .equalTo(RealmPublicSetting.ID, PublicSettingsConstants.Push.GCM_PROJECT_NUMBER)
+            .findAll();
+  }
+
   public static boolean isGcmPushEnabled(List<RealmPublicSetting> results) {
     return isPushEnabled(results);
   }

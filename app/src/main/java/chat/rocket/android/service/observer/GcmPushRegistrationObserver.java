@@ -12,9 +12,11 @@ import bolts.Task;
 import chat.rocket.android.R;
 import chat.rocket.android.RocketChatCache;
 import chat.rocket.android.api.RaixPushHelper;
+import chat.rocket.android.helper.GcmPushSettingHelper;
 import chat.rocket.android.helper.LogIfError;
 import chat.rocket.core.SyncState;
 import chat.rocket.persistence.realm.RealmHelper;
+import chat.rocket.persistence.realm.models.ddp.RealmPublicSetting;
 import chat.rocket.persistence.realm.models.ddp.RealmUser;
 import chat.rocket.persistence.realm.models.internal.GcmPushRegistration;
 import io.realm.Realm;
@@ -80,7 +82,9 @@ public class GcmPushRegistrationObserver extends AbstractModelObserver<GcmPushRe
   }
 
   private String getSenderId() {
-    return context.getString(R.string.gcm_sender_id);
+    return realmHelper.executeTransactionForReadResults(realm -> (
+      GcmPushSettingHelper.getSenderID(realm)
+    )).get(0).getValue();
   }
 
 }
